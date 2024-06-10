@@ -1,5 +1,6 @@
 package com.example.project
 
+import android.util.Log
 import android.content.Context
 import android.widget.Toast
 import java.io.BufferedReader
@@ -12,16 +13,18 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
-const val myFileName = "data6.txt"
+import java.sql.Connection
+import java.sql.DriverManager
+import java.sql.PreparedStatement
+import java.sql.SQLException
 
 // SAVE DATA TO FILE
-fun saveDataToFile(context: Context, task: String, date: String, isChecked:Boolean) {
+fun saveDataToFile(context: Context, fileName: String, task: String, date: String, isChecked:Boolean) {
     if (task.isEmpty() || date.isEmpty()) {
         Toast.makeText(context, "not enough data", Toast.LENGTH_SHORT).show()
         return
     }
 
-    val fileName = myFileName
     val file = File(context.filesDir, fileName)
 
     try {
@@ -38,6 +41,8 @@ fun saveDataToFile(context: Context, task: String, date: String, isChecked:Boole
         outputStreamWriter.close()
         fileOutputStream.close()
 
+        Log.d("17", "$fileName")
+        Log.d("19", "$fileNameDaily")
         Toast.makeText(context, "Data Saved to File", Toast.LENGTH_SHORT).show()
     } catch (e: IOException) {
         e.printStackTrace()
@@ -47,8 +52,8 @@ fun saveDataToFile(context: Context, task: String, date: String, isChecked:Boole
 }
 
 // READ DATA FROM FILE
-fun readDataFromFile(context: Context, index: Int): Triple<String, String, Boolean> {
-    val fileName = myFileName
+fun readDataFromFile(context: Context, fileName: String, index: Int): Triple<String, String, Boolean> {
+
     val file = File(context.filesDir, fileName)
 
     try {
@@ -86,8 +91,8 @@ fun readDataFromFile(context: Context, index: Int): Triple<String, String, Boole
 }
 
 // MODIFY DATA IN FILE BY INDEX
-fun modifyDataInFile(context: Context, index: Int, newTask: String, newDate: String, isChecked: Boolean): Boolean {
-    val fileName = myFileName
+fun modifyDataInFile(context: Context, fileName: String, index: Int, newTask: String, newDate: String, isChecked: Boolean): Boolean {
+
     val file = File(context.filesDir, fileName)
 
     try {
@@ -121,8 +126,8 @@ fun modifyDataInFile(context: Context, index: Int, newTask: String, newDate: Str
 }
 
 // DELETE DATA FROM FILE BY INDEX
-fun deleteDataFromFile(context: Context, index: Int): Boolean {
-    val fileName = myFileName
+fun deleteDataFromFile(context: Context, fileName: String, index: Int): Boolean {
+
     val file = File(context.filesDir, fileName)
 
     try {
